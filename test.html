@@ -1,0 +1,30 @@
+<?php
+require_once('../admin/includes/dbconnection.php');
+$id = $_GET['id'];
+
+$sql	= "SELECT * from video_msg 
+			WHERE id LIKE '%$id%'";
+
+
+$result= mysql_query($sql);
+
+if(mysql_num_rows($result)>0)
+	$row = mysql_fetch_array($result);
+
+$arrRet['pastor'] = $row['pastor'];
+$arrRet['caption'] = $row['caption'];
+$arrRet['video'] = changeWH($row['video']);
+echo json_encode($arrRet);
+
+function changeWH($string) {
+echo $string;
+    $pattern = "/width=\"[0-9]*\"/i";
+    $string = preg_replace($pattern, "width = '100%'", $string);
+echo $string;
+
+    $pattern = "/height=\"[0-9]*\"/i";
+    $string = preg_replace($pattern, "height = '100%'", $string);
+echo $string;
+
+    return $string;
+}
